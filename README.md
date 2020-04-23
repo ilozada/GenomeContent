@@ -49,7 +49,7 @@ Perl version (and above) and the following libraries are required to run the pro
 **Input files** \
 Two files are required by `GenomeContent`, the **genome sequence in fasta** format (with the file extension: **faa**, **fas**, **fna** or **fasta**), and the **annotation file in General Feature or Transfer Formats** (with the file extension: **gtf**, **gff** or **gff3**) where the coordinates of the protein-coding genes are described. There are two versions of the GFF file format in general use: GFF v2 (created by the Sanger Institute) and GFF v3 (created by the Sequence Ontology Project). Both versions have a number of differences to consider. [See complete description of `input` files](#input-files-details).
 
-The `GenomeContent` program can be run in two different modes: **single mode** and **non-single mode**. The **single mode** is designed to perform on one single genome project, this is, one genome sequence with its corresponding annotation file. The **non-single mode** is designed to perform over several genome projects as one job, this is, two or more different annotation files located in one directory with their corresponding genome sequences. See complete description of the `program options` files [here](#program-options).
+The `GenomeContent` program can be run in two different modes: **single mode** and **non-single mode**. The **single mode** is designed to perform on one single genome project, this is, one genome sequence with its corresponding annotation file. The **non-single mode** is designed to perform over several genome projects as one job, this is, two or more different annotation files located in one directory with their corresponding genome sequences. See complete description of the `program options` files [here](#program-options) and `output` files [here](#output-files).
 
 `GenomeContent`: General and mandatory options:
 
@@ -106,7 +106,7 @@ perl GenomeContent.pl -s y -a /home/user/volvox_carteri.genes.gff -g /home/user/
 
 Two files are required by `GenomeContent`, the **genome sequence in fasta** format (with the file extension: **faa**, **fas**, **fna** or **fasta**), and the **annotation file in General Feature or Transfer Formats** (with the file extension: **gtf**, **gff** or **gff3**) where the coordinates of the protein-coding genes are described. There are two versions of the GFF file format in general use: GFF v2 (created by the Sanger Institute) and GFF v3 (created by the Sequence Ontology Project). Both versions have a number of differences to consider.
 
-**GFF2** represents one nesting level of features and only two-level feature hierarchies, such as: transcipt → exon, so that `GenomeContent` identifies in the “group filed of hierarchies” the name and ID numbers of the “CDS” feature coordinates that come from the same gene. The GTF format is a refinement of GFF2 and is sometimes referred to as GFF2.5. PROBLEM IN ALTERNATIVE TRANSCRIPTS.
+**GFF2** represents one nesting level of features and only two-level feature hierarchies, such as: transcipt → exon, so that `GenomeContent` identifies in the “group field of hierarchies” the name and ID numbers of the “CDS” feature coordinates that come from the same gene. The GTF format is a refinement of GFF2 and is sometimes referred to as GFF2.5. PROBLEM IN ALTERNATIVE TRANSCRIPTS.
 
 **GFF3** supports arbitrarily many hierarchical levels and  three-level feature hierarchies, such as: gene → transcript → exon. The top level is a feature of type "gene" which bundles up the gene's transcripts and regulatory elements. Beneath this level are one or more transcripts of type "mRNA". This level can also accommodate promoters and other cis-regulatory elements. At the third level are the components of the mRNA transcripts, most commonly CDS coding segments and UTRs.
 This example shows how to represent a gene named "EDEN" which has three alternatively-spliced mRNA transcripts:
@@ -189,7 +189,8 @@ homo_sapiens.ensembl.genome.gff  and  homo_sapiens.ensembl.genome.fasta         
 **NOTE:** `GenomeContent` requires that all names of the files keep the above structure, regardless the mode you choose to run the pipeline, this is for a single or several genome projects. The structure of the name is particularly important when `GenomeContent` performs over several genome projects in one call.
 
 
-**Output files** \
+#### Output files
+
 In the specified folder, `-o`, several output-files are generated. A description of each output file is now provided with examples for [the green algae Volvox carteri genome project v2.0 (Prochnik et al., 2010)](https://www.ncbi.nlm.nih.gov/pubmed/20616280) from the [Phytozome database version 10.0](https://phytozome.jgi.doe.gov/pz/portal.html). It is important to note that the figures are just provided as a guide to explore the data. Instead, the information provided in the text files is, thus, more suitable to be used to plot figures in a higher quality with other plotting programs.
 
 `GenomeContent` creates several `output` files. See the complete description of each `output` file [here](#description-output-files). Complete list of the output files:
@@ -712,6 +713,93 @@ SIZE_NTS_RANGE 	      NUMBER	FREQ_GC%	 FREQ_AT%	FREQ_N%
 These files report several statistic estimators from the whole population for every genome feature (CDS, exons, introns and intergenic regions) at different levels: the whole genome, by strands and by chromosomes (when available). Meaning of the headers is described in the table of the following section.
 
 __Table for the description of the headers in the output files__
+
+
+| **VARIABLE**                      | **DESCRIPTION**                                                              |
+| --------------------------------- | ---------------------------------------------------------------------------- |
+| **MEASUREMENTS FOR GENOME SIZE**  |
+| **GENOME\_NTS**                   | Total nucleotide length of the genome (assembled or estimated)               |
+| **GENOME\_MBS**                   | Total nulceotide length of the genome (assembled or estimated) as Megabases  |
+| **LOG\_GENOME\_SIZE\_NTS**        | Logaritmic value (base 10) of the genome size measured in nucleotides        |
+| **LOG\_GENOME\_MBS**              | Logaritmic value (base 10) of the genome size measured in Megabases          |
+| **MEASUREMENTS FOR CDS**          |
+| **CDS\_NUMBER**                   | Total number of protein-coding genes                                         |
+| **CDS\_CONTENT\_MBS**             | Total nucleotide coverage of protein-coding genes in the genome as Megabases |
+| **CDS\_AVG\_SIZE**                | Average size of protein-coding genes in the genome                           |
+| **CDS\_with\_INTRONS**            | Total number of protein-coding genes harboring introns                       |
+| **CDS\_with\_INTRONS\_%**         | Fraction of protein-coding genes harboring introns                           |
+| **TOTAL\_NUMBER\_TRANSCRIPTS**    |                                                                              |
+| **CDS\_with\_TRANSCRIPTS**        |                                                                              |
+| **CDS\_with\_TRANSCRIPTS\_%**     |                                                                              |
+| **AVG\_NUMBER\_TRANSCRIPT**       |                                                                              |
+| **WEIGHTAVG\_NUMBER\_TRANSCRIPT** |                                                                              |
+| **MEASUREMENTS for INTRONS, EXONS and INTERGENICS** |
+| **TOTAL\_NUMBER**                                   | Total number of introns/exons in the genome -TRANSTRIPT OR CONTENT?-|
+| **AVERAGE\_SIZE**                                   | **Straight average:** average of all intron/exon sizes found in the protein-coding genes of a genome. It depends on the number of data points from the whole sample (_i.e._, gene models with exons/introns), which equally contribute to the final average regardless of which gene they belong to. In the case of intergenic regions, the average is calculated by taking into account all intergenic regions.|
+| **LOG\_AVG\_SIZE**                                  | Logaritmic value (base 10) of the intron/exon/intergenics average size measured in nucleotides|
+| **FILTERAVG\_SIZE**                                 | Straight average size of the introns/exons/intergenics located between the upper and lower fences of the size distribution|
+| **WEIGHTAVG\_SIZE**                                 | **Weighted average size for introns:** average of the mean intron sizes for all protein-coding genes bearing introns. **Weighted average size for exons:** average of the mean exon sizes for all protein-coding genes. It depends on the gene-structure of the genome, and thus, it samples more broadly the data points that contribute –in the case of introns– to the very well known high-skewed length distribution. **Not available for intergenic regions.** |
+| **LOG\_WAVG\_SIZE**                                 | Logaritmic value (base 10) of the intron/exon weighted average size measured in nucleotides|
+| **WEIGHTAVG\_SIZE\_FILTER**                         | Weighted average size of the introns/exons located between the upper and lower fences of the size distribution |
+| **NORMALISEDAVG\_SIZE**                             | Mean size of the introns/exons based on the AVERAGE\_SIZE,  WEIGHTAVG\_SIZE and FILTERAVG\_SIZE|
+| **AVG\_VAR**                                        | Variance of the straight AVERAGE\_SIZE|
+| **AVG\_SD**                                         | Standard deviation of the AVERAGE\_SIZE|
+| **AVG\_EBARBEGIN**                                  | First position of the error bar estimated for the AVERAGE\_SIZE|
+| **AVG\_EBAREND**                  | AVG_EBAREND	Final position of the error bar estimated for the AVERAGE_SIZE |
+| **AVG_VARFILTER**                 | Variance of the straight FILTERAVG_SIZE |
+| **AVG_SDFILTER**                  | Standard deviation of the FILTERAVG_SIZE |
+| **AVG_EBARBEGIN_FILTER**          | First position of the error bar estimated for the FILTERAVG_SIZE |
+| **AVG_EBAREND_FILTER**            | Final position of the error bar estimated for the FILTERAVG_SIZE |
+| **WEIGHTAVG_VAR**                 |	Variance of the WEIGHTAVG_SIZE |
+| **WEIGHTAVG_SD**                  |	Standard deviation of the WEIGHTAVG_SIZE |
+| **WEIGHTAVG_EBARBEGIN**           |	First position of the error bar estimated for the WEIGHTAVG_SIZE |
+| **WEIGHTAVG_EBAREND**             |	Final position of the error bar estimated for the WEIGHTAVG_SIZE |
+| **WEIGHTAVG_VARFILTER**           |	Variance of the straight WEIGHTAVG_SIZE_FILTER |
+| **WEIGHTAVG_SDFILTER**            |	Standard deviation of the WEIGHTAVG_SIZE_FILTER |
+| **WEIGHTAVG_EBARBEGIN_FILTER**    |	First position of the error bar estimated for the WEIGHTAVG_SIZE_FILTER |
+| **WEIGHTAVG_EBAREND_FILTER**      |	Final position of the error bar estimated for the WEIGHTAVG_SIZE_FILTER |
+| **MIN_SIZE**                      |	Minimum size of the intron/exon/intergenic sequence |
+| **MAX_SIZE**                      |	Maximum size of the intron/exon/intergenic sequence |
+| **SIZE_Q_DOWN**                   |	0.05 percentile of the intron/exon/intergenic population size |
+| **SIZE_Q1**                       |	First quartile of the intron/exon/intergenic population size |
+| **SIZE_Q2-MEDIAN**                |	Second quartile or median of the intron/exon/intergenic population size |
+| **SIZE_Q3**                       |	Third quartile of the intron/exon/intergenic population size |
+| **SIZE_Q_UP**                     |	0.95 percentile of the intron/exon/intergenic population size |
+| **SIZE_LOWER_FENCE**              |	Lower fence (for outliers) of the intron/exon/intergenic population size, LF = Q1 - 1.5 (IQR) |
+| **SIZE_UPPER_FENCE**              |	Upper fence (for outliers) of the intron/exon/intergenic population size, UF = Q3 + 1.5 (IQR) |
+| **FULL_LENGTH_NTS**               |	Total nucleotide length of the intronic/exonic/intergenic sequences |
+| **FULL_LENGTH_MBS**               |	Total nucleotide length of the intronic/exonic/intergenic sequences as Megabases |
+| **CONTENT_NTS**                   |	Total nucleotide coverage of intronic/exonic/intergenic sequences in the genome |
+| **CONTENT_MBS**                   |	Total nucleotide coverage of intronic/exonic/intergenic sequences in the genome as Megabases |
+| **CONTENT_GENOME_%**              |	Fraction of the genome size that correspond to intronic/exonic/intergenic sequences |
+| **LOG_GENOME_CONTENT**            |	Logaritmic value (base 10) of the genome content for a particular feature (intron, exon, intergenic) measured in Megabases |
+| **MEASUREMENTS for EXONS and INTRONS ONLY** |
+| **RATIO_INTRONS:EXONS**           |	The ratio of total introns per total exons in a genome |
+| **EXON_DEFINITION_%**             |	Porportion (%) of internal exons flanked by at least one short intron (≤ 250 nts) |
+| **EXONFILTER_DEFINITION_%**       |	Porportion (%) of internal exons located between the upper and lower fences of the size distribution and that are flanked by at least one short intron (≤ 250 nts) |
+| **WEIGHTED_DENSITY**              |	Average of the mean intron/exons numbers for all protein-coding genes |
+| **STANDARD_DENSITY**              |	**For introns:** average number of introns in protein-coding genes bearing introns. **For exons:** average number of exons in protein-coding genes |
+| **DENSITY_MIN**                   |	Minimum number of introns in protein-coding genes |
+| **DENSITY_MAX**                   |	Maximum number of introns in protein-coding genes |
+| **DENSITY_VAR**                   |	Variance of the STANDARD_DENSITY |
+| **DENSITY_SD**                    |	Standard deviation of the STANDARD_DENSITY |
+| **DENSITY_EBAR_BEGIN**            |	First position of the error bar estimated for the STANDARD_DENSITY |
+| **DENSITY_EBAR_END**              |	Final position of the error bar estimated for the STANDARD_DENSITY |
+| **DENSITY_FILTER**                |	Average number of introns and exons within protein-coding genes located between the upper and lower fences of their corresponding size distribution |
+| **DENSITY_FILTER_VAR**            |	Variance of the DENSITY_FILTER |
+| **DENSITY_FILTER_SD**             |	Standard deviation of the DENSITY_FILTER |
+| **DENSITY_FILTER_EBARBEGIN**      |	First position of the error bar estimated for the DENSITY_FILTER |
+| **DENSITY_FILTER_EBAREND**        |	Final position of the error bar estimated for the DENSITY_FILTER |
+| **NUCLEOTIDE COMPOSITION** |
+| **FREQ_A_%**                      |	Frequency of adenine in the sequence |
+| **FREQ_T_%**                      |	Frequency of thymine in the sequence |
+| **FREQ_G_%**                      |	Frequency of cytosine in the sequence |
+| **FREQ_C_%**                      |	Frequency of guanine in the sequence |
+| **FREQ_AT_%**                     |	Frequency of A-T in the sequence |
+| **FREQ_GC_%**                     |	Frequency of G-C in the sequence |
+| **FREQ_Ns_%**                     |	Frequency of undetermined nucleotides in the sequence labeled as N |
+| **FREQ_Xs_%**                     |	Frequency of undetermined nucleotides in the sequence labeled as X |
+| **FREQ_Zs_%**                     |	Frequency of undetermined nucleotides in the sequence labeled as any other way rather than N and X |
 
 
 ## Manual
