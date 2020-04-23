@@ -47,7 +47,7 @@ Perl version (and above) and the following libraries are required to run the pro
 ## Quick start
 
 **Input files** \
-Two files are required by `GenomeContent`, the **genome sequence in fasta** format (with the file extension: **faa**, **fas**, **fna** or **fasta**), and the **annotation file in General Feature or Transfer Formats** (with the file extension: **gtf**, **gff** or **gff3**) where the coordinates of the protein-coding genes are described. There are two versions of the GFF file format in general use: GFF v2 (created by the Sanger Institute) and GFF v3 (created by the Sequence Ontology Project). Both versions have a number of differences to consider. [See complete description of `input` files](#description).
+Two files are required by `GenomeContent`, the **genome sequence in fasta** format (with the file extension: **faa**, **fas**, **fna** or **fasta**), and the **annotation file in General Feature or Transfer Formats** (with the file extension: **gtf**, **gff** or **gff3**) where the coordinates of the protein-coding genes are described. There are two versions of the GFF file format in general use: GFF v2 (created by the Sanger Institute) and GFF v3 (created by the Sequence Ontology Project). Both versions have a number of differences to consider. [See complete description of `input` files](#input-files-details).
 
 The `GenomeContent` program can be run in two different modes: **single mode** and **non-single mode**. The **single mode** is designed to perform on one single genome project, this is, one genome sequence with its corresponding annotation file. The **non-single mode** is designed to perform over several genome projects as one job, this is, two or more different annotation files located in one directory with their corresponding genome sequences. See complete description of the `program options` files [here](#program-options).
 
@@ -101,6 +101,93 @@ perl GenomeContent.pl -s no -a <annotations> -g <genomes> -o <outfiles> [optiona
 ```terminal
 perl GenomeContent.pl -s y -a /home/user/volvox_carteri.genes.gff -g /home/user/volvox_carteri.assembly.fasta -o /home/user/outputs
 ```
+
+##### Input files: details
+
+Two files are required by `GenomeContent`, the **genome sequence in fasta** format (with the file extension: **faa**, **fas**, **fna** or **fasta**), and the **annotation file in General Feature or Transfer Formats** (with the file extension: **gtf**, **gff** or **gff3**) where the coordinates of the protein-coding genes are described. There are two versions of the GFF file format in general use: GFF v2 (created by the Sanger Institute) and GFF v3 (created by the Sequence Ontology Project). Both versions have a number of differences to consider.
+
+**GFF2** represents one nesting level of features and only two-level feature hierarchies, such as: transcipt → exon, so that `GenomeContent` identifies in the “group filed of hierarchies” the name and ID numbers of the “CDS” feature coordinates that come from the same gene. The GTF format is a refinement of GFF2 and is sometimes referred to as GFF2.5. PROBLEM IN ALTERNATIVE TRANSCRIPTS.
+
+**GFF3** supports arbitrarily many hierarchical levels and  three-level feature hierarchies, such as: gene → transcript → exon. The top level is a feature of type "gene" which bundles up the gene's transcripts and regulatory elements. Beneath this level are one or more transcripts of type "mRNA". This level can also accommodate promoters and other cis-regulatory elements. At the third level are the components of the mRNA transcripts, most commonly CDS coding segments and UTRs.
+This example shows how to represent a gene named "EDEN" which has three alternatively-spliced mRNA transcripts:
+
+For example, it  and gives specific meanings to certain tags in the attributes field.
+
+**NOTE:** In principle,
+
+Once the user has both files, it is important to make sure that these files fulfill three requirements:
+
+**1.** Make sure that the name or ID of the chromosomes/scaffolds/contigs in the fasta format correspond to the same names located in the first column of the gene annotation file. *Examples*:
+Fasta file 1:
+
+```terminal
+>17 dna:chromosome chromosome:GRCh37:17:1:81195210:1 REF
+AAGCTTCTCACCCTGTTCCTGCATAGATAATTGCATGACAATTGCCTTGTCCCTGCTGAA
+TGTGCTCTGGGGTCTCTGGGGTCTCACCCACGACCAACTCCCTGGGCCTGGCACCAGGGA
+```
+
+Gene annotation file 1:
+
+```terminal
+17  protein_coding  CDS     17991338        17991401    .    +       0       gene_id "ENSG00000108591"; transcript_id "ENST00000580929"; exon_number "1"; gene_name "DRG2"; gene_biotype "protein_coding"; transcript_name "DRG2-011"; protein_id "ENSP00000462060";
+```
+
+Fasta file 2:
+
+```terminal
+>scaffold_1
+CAGAACGGGAAACAGAAGAAAATCGTGTGAAGACGAAATAATATCGCTGGCCAGTACGGCCGCGGTACATTCAACATGTA
+AAACTTTCTCATGTCTGTCTATCCATCCATCCATCCATCCATCCATCCATCCATCCATCCATCCATCCATCCATCCATCC
+```
+
+Annotation file 2:
+
+```terminal
+scaffold_1		phytozome8_0	CDS	8410627	8410668	.	-	0	ID=PAC:23125614.CDS.1; Parent=PAC:23125614;pacid=23125614
+```
+
+**NOTE:** In principle, both files should correspond to the same released version of the genome project. In case that the user would like to compare different versions of these files, just be aware that some protein-coding gene coordinates could not be mapped correctly into the genome sequence if changes in the contigs, scaffolds or chromosomes occur along the versions.
+
+**2.** If the size of the genome sequence is bigger than 2.5 Gigabytes and the user is using a single standard laptop (2.6GHz, 8GB RAM), the user might consider to divide the genome sequence in smaller files. For example,the pinus genome ≈ 22.0 Gbs will need ~60 Gbs to read and process the sequence. Thus, the user is advised to divide the genome sequence by chromosomes or parts of similar size.
+
+**3.** Make sure that the names of the sequence and the annotation files have the following structure:
+
+```terminal
+species.database.status.otheruserinfo.fasta  and  species.database.status.otheruserinfo.gff
+
+<species>     Name of the species, e.g.: homo, homo_sapiens, hsa
+<database>    Name of the database where the annotation file was downloaded, e.g.: ensembl, phytozome, jgi, vectorbase, denovo, etc.
+              The program makes a particular distinction between the “ensemble” database and the rest. Make sure that you provide the correct database name.
+
+<status>      One of the only two status recognized for a genome project:
+              genome   = if complete until chromosome assignments
+              assembly = if assembled at the conting and/or scaffold level
+              The program requires any of these two options to be correctly provided for the single mode.
+              The option should also match the corresponding information provided in the name of the annotation file.
+<fasta>       Extension of the fasta file, e.g.: .fasta, .faa, .fas, .fna
+<annotation>  Extension of the fasta file, e.g.: .gff, .gtf
+```
+
+Example for an assembled genome:
+
+```bash
+volvox_carteri.phytozome.assembly.gff  and  volvox_carteri.phytozome.assembly.fasta
+```
+
+Example for a complete genome in a single file or several files:
+
+```bash
+homo_sapiens.ensembl.genome.gff  and  homo_sapiens.ensembl.genome.fasta         or
+                                      homo_sapiens.ensembl.chromosome.1.fasta
+                                      homo_sapiens.ensembl.chromosome.2.fasta
+									  ...
+                                      homo.sapiens.ensembl.chromosome.22.fasta
+                                      homo.sapiens.ensembl.chromosome.X.fasta
+                                      homo.sapiens.ensembl.chromosome.Y.fasta
+```
+
+**NOTE:** `GenomeContent` requires that all names of the files keep the above structure, regardless the mode you choose to run the pipeline, this is for a single or several genome projects. The structure of the name is particularly important when `GenomeContent` performs over several genome projects in one call.
+
 
 **Output files** \
 In the specified folder, `-o`, several output-files are generated. A description of each output file is now provided with examples for [the green algae Volvox carteri genome project v2.0 (Prochnik et al., 2010)](https://www.ncbi.nlm.nih.gov/pubmed/20616280) from the [Phytozome database version 10.0](https://phytozome.jgi.doe.gov/pz/portal.html). It is important to note that the figures are just provided as a guide to explore the data. Instead, the information provided in the text files is, thus, more suitable to be used to plot figures in a higher quality with other plotting programs.
@@ -692,93 +779,6 @@ GenomeContent also estimates the “feature content” of a given genome, i.e., 
 > **`Exon > Intron > Intergenic_region`**
 
 It reflects the idea that a genomic position is exonic whenever it appears in a coding exon of at least one transcript. Thus, the exon content of a genome is calculated as the total number of nucleotides in the genome sequence that are classified as coding exon with respect to at least one isoform. Analogously, a position is classified as ’intronic’ if it appears inside the boundaries of annotated coding exons, but it does not overlap with any coding sequence. Thus, intron content was determined as the total number of nucleotides of a genome that were classified as intronic. The CDS content of a genome is calculated as the total number of nucleotides covered by the intronic and exonic positions within coding genes. Finally, the non-coding DNA content was computed analogously as the total number of nucleotides in a genome that are not covered by exonic and intronic positions from coding genes. Genome-feature contents are reported as: total size in Megabases (Mb), fraction (%) from the total genome size, and as genomic coordinates.
-
-__Input files__
-
-Two files are required by `GenomeContent`, the **genome sequence in fasta** format (with the file extension: **faa**, **fas**, **fna** or **fasta**), and the **annotation file in General Feature or Transfer Formats** (with the file extension: **gtf**, **gff** or **gff3**) where the coordinates of the protein-coding genes are described. There are two versions of the GFF file format in general use: GFF v2 (created by the Sanger Institute) and GFF v3 (created by the Sequence Ontology Project). Both versions have a number of differences to consider.
-
-**GFF2** represents one nesting level of features and only two-level feature hierarchies, such as: transcipt → exon, so that `GenomeContent` identifies in the “group filed of hierarchies” the name and ID numbers of the “CDS” feature coordinates that come from the same gene. The GTF format is a refinement of GFF2 and is sometimes referred to as GFF2.5. PROBLEM IN ALTERNATIVE TRANSCRIPTS.
-
-**GFF3** supports arbitrarily many hierarchical levels and  three-level feature hierarchies, such as: gene → transcript → exon. The top level is a feature of type "gene" which bundles up the gene's transcripts and regulatory elements. Beneath this level are one or more transcripts of type "mRNA". This level can also accommodate promoters and other cis-regulatory elements. At the third level are the components of the mRNA transcripts, most commonly CDS coding segments and UTRs.
-This example shows how to represent a gene named "EDEN" which has three alternatively-spliced mRNA transcripts:
-
-For example, it  and gives specific meanings to certain tags in the attributes field.
-
-**NOTE:** In principle,
-
-Once the user has both files, it is important to make sure that these files fulfill three requirements:
-
-**1.** Make sure that the name or ID of the chromosomes/scaffolds/contigs in the fasta format correspond to the same names located in the first column of the gene annotation file. *Examples*:
-Fasta file 1:
-
-```terminal
->17 dna:chromosome chromosome:GRCh37:17:1:81195210:1 REF
-AAGCTTCTCACCCTGTTCCTGCATAGATAATTGCATGACAATTGCCTTGTCCCTGCTGAA
-TGTGCTCTGGGGTCTCTGGGGTCTCACCCACGACCAACTCCCTGGGCCTGGCACCAGGGA
-```
-
-Gene annotation file 1:
-
-```terminal
-17  protein_coding  CDS     17991338        17991401    .    +       0       gene_id "ENSG00000108591"; transcript_id "ENST00000580929"; exon_number "1"; gene_name "DRG2"; gene_biotype "protein_coding"; transcript_name "DRG2-011"; protein_id "ENSP00000462060";
-```
-
-Fasta file 2:
-
-```terminal
->scaffold_1
-CAGAACGGGAAACAGAAGAAAATCGTGTGAAGACGAAATAATATCGCTGGCCAGTACGGCCGCGGTACATTCAACATGTA
-AAACTTTCTCATGTCTGTCTATCCATCCATCCATCCATCCATCCATCCATCCATCCATCCATCCATCCATCCATCCATCC
-```
-
-Annotation file 2:
-
-```terminal
-scaffold_1		phytozome8_0	CDS	8410627	8410668	.	-	0	ID=PAC:23125614.CDS.1; Parent=PAC:23125614;pacid=23125614
-```
-
-**NOTE:** In principle, both files should correspond to the same released version of the genome project. In case that the user would like to compare different versions of these files, just be aware that some protein-coding gene coordinates could not be mapped correctly into the genome sequence if changes in the contigs, scaffolds or chromosomes occur along the versions.
-
-**2.** If the size of the genome sequence is bigger than 2.5 Gigabytes and the user is using a single standard laptop (2.6GHz, 8GB RAM), the user might consider to divide the genome sequence in smaller files. For example,the pinus genome ≈ 22.0 Gbs will need ~60 Gbs to read and process the sequence. Thus, the user is advised to divide the genome sequence by chromosomes or parts of similar size.
-
-**3.** Make sure that the names of the sequence and the annotation files have the following structure:
-
-```terminal
-species.database.status.otheruserinfo.fasta  and  species.database.status.otheruserinfo.gff
-
-<species>     Name of the species, e.g.: homo, homo_sapiens, hsa
-<database>    Name of the database where the annotation file was downloaded, e.g.: ensembl, phytozome, jgi, vectorbase, denovo, etc.
-              The program makes a particular distinction between the “ensemble” database and the rest. Make sure that you provide the correct database name.
-
-<status>      One of the only two status recognized for a genome project:
-              genome   = if complete until chromosome assignments
-              assembly = if assembled at the conting and/or scaffold level
-              The program requires any of these two options to be correctly provided for the single mode.
-              The option should also match the corresponding information provided in the name of the annotation file.
-<fasta>       Extension of the fasta file, e.g.: .fasta, .faa, .fas, .fna
-<annotation>  Extension of the fasta file, e.g.: .gff, .gtf
-```
-
-Example for an assembled genome:
-
-```bash
-volvox_carteri.phytozome.assembly.gff  and  volvox_carteri.phytozome.assembly.fasta
-```
-
-Example for a complete genome in a single file or several files:
-
-```bash
-homo_sapiens.ensembl.genome.gff  and  homo_sapiens.ensembl.genome.fasta         or
-                                      homo_sapiens.ensembl.chromosome.1.fasta
-                                      homo_sapiens.ensembl.chromosome.2.fasta
-									  ...
-                                      homo.sapiens.ensembl.chromosome.22.fasta
-                                      homo.sapiens.ensembl.chromosome.X.fasta
-                                      homo.sapiens.ensembl.chromosome.Y.fasta
-```
-
-**NOTE:** `GenomeContent` requires that all names of the files keep the above structure, regardless the mode you choose to run the pipeline, this is for a single or several genome projects. The structure of the name is particularly important when `GenomeContent` performs over several genome projects in one call.
-
 
 
 ---
