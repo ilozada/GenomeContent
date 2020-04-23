@@ -193,10 +193,10 @@ perl GenomeContent  -s yes -a <annotations>  -g <genomes>  -o <outfiles>
 ```
 
 
-*Example:*
+*Syntaxis:*
 
 ```termial
-perl GenomeContent.pl  -s yes  -a /home/user/volvox_carteri.genes.gff
+perl GenomeContent.pl  -s yes  -a /home/user/volvox_carteri.genes.gff -g /home/user/volvox_carteri.assembly.fasta -o /home/user/outputs -d phytozome -t assembly -e volvox_carteri
 ```
 
 - **NON-SINGLE MODE**
@@ -221,7 +221,7 @@ perl GenomeContent.pl  -s no -a <annotations> -g <genomes> -o <outfiles> [option
                     [OPTIONAL] e.g., -mi 25
 ```
 
-*Example:*
+*Syntaxis:*
 
 ```terminal
 perl GenomeContent.pl  -s y  -a /home/user/volvox_carteri.genes.gff -g /home/user/volvox_carteri.assembly.fasta  -o /home/user/outputs
