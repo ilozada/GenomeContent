@@ -102,7 +102,7 @@ perl GenomeContent.pl -s no -a <annotations> -g <genomes> -o <outfiles> [optiona
 perl GenomeContent.pl -s y -a /home/user/volvox_carteri.genes.gff -g /home/user/volvox_carteri.assembly.fasta -o /home/user/outputs
 ```
 
-##### Input files: details
+#### Input files: details
 
 Two files are required by `GenomeContent`, the **genome sequence in fasta** format (with the file extension: **faa**, **fas**, **fna** or **fasta**), and the **annotation file in General Feature or Transfer Formats** (with the file extension: **gtf**, **gff** or **gff3**) where the coordinates of the protein-coding genes are described. There are two versions of the GFF file format in general use: GFF v2 (created by the Sanger Institute) and GFF v3 (created by the Sequence Ontology Project). Both versions have a number of differences to consider.
 
