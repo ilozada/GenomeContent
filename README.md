@@ -67,14 +67,14 @@ $ perl GenomeContent.pl
 
 
 - **SINGLE MODE** \
-  *Example:*
+  *Syntaxis:*
 
 ```terminal
 perl GenomeContent.pl  -s yes  -a /home/user/volvox_carteri.genes.gff
 ```
 
 - **NON-SINGLE MODE** \
-  *Example:*
+  *Syntaxis:*
 
 ```terminal
   perl GenomeContent.pl  -s no -a <annotations> -g <genomes> -o <outfiles> [optional parameters]
