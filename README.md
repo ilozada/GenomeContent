@@ -70,7 +70,7 @@ $ perl GenomeContent.pl
   *Syntaxis:*
 
 ```terminal
-perl GenomeContent.pl  -s yes  -a /home/user/volvox_carteri.genes.gff
+perl GenomeContent.pl -s yes -a <annotations> -g <genomes> -o <outfiles> -d <database> -t <status> -e <species> [optional parameters]
 ```
 
 - **NON-SINGLE MODE** \
@@ -86,13 +86,13 @@ Examples `infiles` and `outfiles` to test `GenomeContent` program are located in
 `single mode` (one genome):
 
 ```terminal
-perl /home/user/GenomeContent/GenomeContent_final.pl  -s y  -a /home/user/GenomeContent/volvox_carteri.genes.gff -g /home/user/GenomeContent/volvox_carteri.assembly.fasta -o /home/user/GenomeContent/outputs  -d ensembl  -t assembly  -e <species>
+perl GenomeContent.pl -s no -a <annotations> -g <genomes> -o <outfiles> [optional parameters]
 ```
 
 `non-single mode` (several genomes):
 
 ```terminal
-perl /home/user/GenomeContent/GenomeContent_final.pl  -a /home/user/GenomeContent/annotations -g /home/user/GenomeContent/genomes -o /home/user/GenomeContent/outputs
+perl GenomeContent.pl -s y -a /home/user/volvox_carteri.genes.gff -g /home/user/volvox_carteri.assembly.fasta -o /home/user/outputs
 ```
 
 **Output files** \
