@@ -656,6 +656,129 @@ This is an important error. The program relies on matching the sequence names of
 
 ## Description
 
+`GenomeContent` was written in Perl to calculate global statistics and sequence-based estimators of genome features in six major steps, as shown in Figure 1. First, the processing of gene annotations focuses on identifying coordinates from protein-coding gene (CDS), while the filtering process focuses on checking the quality of intron annotations. As described in next sections, the coordinates derived from both proceses are taken as the “reference gene sets” for introns, exons and intergenic regions to directly estimate several statistic descriptors, such as size, density and number. Then, the “reference gene sets” are projected onto the genome sequence in both strands, so that the nucleotide contents of each genome-feature are calculated according to the definitions described in a section below. Finally, all statistic descriptors obtained with the program are provided as text files, fasta formats and exploratory figures (as shown in Figure 1). `GenomeContent` runs on an entire genome in few minutes or hours, depending on genome size and the number of annotated genes. `GenomeContent` is available upon request during peer-review, and will be openly available after publication.
+
+![Figure 1]()
+
+__Figure 1.__ A flowchart of the `GenomeContent` pipeline. The genome sequence in fasta format and the gene annotation in standard format are required to run the pipeline. Two major steps take place sequentially to process gene annotation coordinates: identification of protein-coding genes, filtering and checking of protein-coding gene annotations, and calculation of statistic descriptors. The coordinates derived from steps one and two provide “reference sets” for introns, exons and intergenic regions. These sets are then projected onto the genome sequence in both strands and the genome-feature content is calculated according to the equations described below.
+
+#### 1.1. Filtering of gene annotations
+
+The filtering process of `GenomeContent` involves: a) identification of CDS, b) removal of small sizes, c) treatment of isoforms, and d) estimation of systematic errors in CDS. First, only genome coordinates from CDS were extracted, but their corresponding untranslated regions (UTRs) are not included because these are not fully annotated in most genome projects (Davuluri, 2001, PMID:11726928; Stormo, 2000, PMID:10779479). By default, `GenomeContent` exclude introns and exons smaller than 15 nucleotides (nts). Although, small exons and introns (<20 nts) have been reported in several eukaryotes (Gilson, 2006, PMID:16760254; Lim, 2001, PMID: 11572975; Deutsch, 1999, PMID:10454621; Wang, 2006, PMID:16632598; Kupfer, 2004, PMID:15470237; Berget, 1995, PMID:7852296; Volfovsky, 2003, PMID:12799353). Thus, this parameter can be changed by the user. Third, alternative splice variants were kept in the data. To avoid redundant/overestimated data, however, exons with partial or full matching boundaries to exons of other transcripts were overlapped; the same rule was applied to introns. In both cases, their coordinates were joined or replaced accordingly; thus, every exon and intron is only counted once. We call this filtered set of protein-coding gene coordinates for every genome as the “reference gene set”.
+Most of the collected gene annotations are based on transcript evidence. Nevertheless, we implemented the approach proposed by Roy and Penny (2007, PMID:17617639) in `GenomeContent` to further estimate systematic errors in CDS annotations by identifying the excess/deficit of the intron-length distributions modulo 3. Since introns are not expected to respect the coding frame, intron lengths 3n, 3n + 1, and 3n + 2 should appear in similar fractions `p3n ≈ p3n + 1 ≈ p3n + 2`. As stated in Roy and Penny (2007), large values of “3n excess”, `E3 = p3n − (p3n + 1 + p3n + 2) /2`, suggest that a considerable fraction of internal exons may have been incorrectly predicted as introns or that there are several “intron retention” events. On the other hand, a deficit of 3 n introns, i.e., `E3 ≪ 0`, suggests that a considerable fraction of 3n introns&#8213;lacking of stop codons&#8213;may have been mistaken for exons.
+
+#### 1.2 Estimation of average sizes and densities of genome features
+
+Several statistical estimators for every genome feature were obtained with GenomeContent. Genome size is defined as the net length of nucleotides and placeholders of all sequences conforming the nuclear genome. The average feature size (e.g., intron size and exon size) of CDSs per genome was calculated in two ways. The straight average size `(Afeature)` is calculated as the total length of all feature sequences (exons or introns) in a genome `(Lfeature)` divided by the total number of all feature sequences (exons or introns, respectively) in a genome `(Nfeature): Afeature = Lfeature /Nfeature`. The straight average depends on the number of data points from the whole sample (i.e., gene models with introns), which equally contribute to the final average regardless of which gene they belong to.
+
+If we now consider a feature to be the average length of the respective feature (exon or intron) within one single gene: a `feature = l feature /n feature`, then the weighted average size, ā f eature , is calculated as the mean of the a f eature values of the respective feature (exons or introns) in a genome, according to:
+
+
+
+where n represents the total number of CDSs in a genome when calculating ā exon , or the total number of intron-containing CDSs in a genome when calculating `ā` intron (Gudlaugsdottir, 2007). The weighted average depends on the gene-structure of the genome, and thus it samples more broadly the data points that contribute, in the case of introns, to the well known skewed length distribution.
+
+`GenomeContent` also estimates the abundance of introns within a genome with two different estimates to detect small changes of intron-richness and to buffer dramatic changes among updated genome releases and gene annotations. On the one hand, the abundance of introns across CDSs was estimated as the fraction of intron-containing CDSs from the total number of CDSs (% CDS), which might reflect complete intron loss from CDS structures at the genome level. On the other hand, the abundance of introns and exons within CDSs (“absolute density”) was estimated as the mean number per genome of exons in CDS (exon density), or introns per intron-containing CDSs (intron density), respectively. We employ the “absolute density” because, as observed on Table 1, the average number of introns either per sequence region or from the total number of genes (“normalized density”) depends on both genome size and the number of CDSs, respectively.
+
+
+
+> **Table 1. Comparison of intron density estimations: absolute (aID) and normalized (nID).**
+
+For instance, the four species listed in Table 1 exhibit around five introns per CDS when a “normalized” density is estimated from the total number of CDSs. However, the “absolute intron density” clearly shows that, for instance, *X. laevis*, *T. chinensis* and *G. theta* have indeed more introns per CDS on average than the other species, despite of having a smaller fraction of intron-containing CDSs (70.8%, 72.5% and 78.3%, respectively), and lower number of introns and CDS in some cases. Clearly, the bias observed in the “normalized intron density” is produced by larger numbers of total CDS in the genome.
+
+#### 1.3 Estimation of genome contents
+
+GenomeContent also estimates the “feature content” of a given genome, i.e., the proportion of nucleotides of the respective genome features (intron, exon, or intergenic) that contributes to genome size. Since most genome annotations only contain protein-coding regions rather than full transcript models, we count only coding exons and introns delimited by a pair of coding exons. As shown in Figure 1, the program projects the sets of genomic intervals for all exons and introns from coding genes located in the plus strand (set A), the minus strand (set B), and of the isoforms (set C). Since a given nucleotide may be classified differently for different isoforms, we used the following domincance rule in order to obtain a unique classification at the genome level:
+
+> **`Exon > Intron > Intergenic_region`**
+
+It reflects the idea that a genomic position is exonic whenever it appears in a coding exon of at least one transcript. Thus, the exon content of a genome is calculated as the total number of nucleotides in the genome sequence that are classified as coding exon with respect to at least one isoform. Analogously, a position is classified as ’intronic’ if it appears inside the boundaries of annotated coding exons, but it does not overlap with any coding sequence. Thus, intron content was determined as the total number of nucleotides of a genome that were classified as intronic. The CDS content of a genome is calculated as the total number of nucleotides covered by the intronic and exonic positions within coding genes. Finally, the non-coding DNA content was computed analogously as the total number of nucleotides in a genome that are not covered by exonic and intronic positions from coding genes. Genome-feature contents are reported as: total size in Megabases (Mb), fraction (%) from the total genome size, and as genomic coordinates.
+
+__Input files__
+
+Two files are required by `GenomeContent`, the **genome sequence in fasta** format (with the file extension: **faa**, **fas**, **fna** or **fasta**), and the **annotation file in General Feature or Transfer Formats** (with the file extension: **gtf**, **gff** or **gff3**) where the coordinates of the protein-coding genes are described. There are two versions of the GFF file format in general use: GFF v2 (created by the Sanger Institute) and GFF v3 (created by the Sequence Ontology Project). Both versions have a number of differences to consider.
+
+**GFF2** represents one nesting level of features and only two-level feature hierarchies, such as: transcipt → exon, so that `GenomeContent` identifies in the “group filed of hierarchies” the name and ID numbers of the “CDS” feature coordinates that come from the same gene. The GTF format is a refinement of GFF2 and is sometimes referred to as GFF2.5. PROBLEM IN ALTERNATIVE TRANSCRIPTS.
+
+**GFF3** supports arbitrarily many hierarchical levels and  three-level feature hierarchies, such as: gene → transcript → exon. The top level is a feature of type "gene" which bundles up the gene's transcripts and regulatory elements. Beneath this level are one or more transcripts of type "mRNA". This level can also accommodate promoters and other cis-regulatory elements. At the third level are the components of the mRNA transcripts, most commonly CDS coding segments and UTRs.
+This example shows how to represent a gene named "EDEN" which has three alternatively-spliced mRNA transcripts:
+
+For example, it  and gives specific meanings to certain tags in the attributes field.
+
+**NOTE:** In principle,
+
+Once the user has both files, it is important to make sure that these files fulfill three requirements:
+
+**1.** Make sure that the name or ID of the chromosomes/scaffolds/contigs in the fasta format correspond to the same names located in the first column of the gene annotation file. *Examples*:
+Fasta file 1:
+
+```terminal
+>17 dna:chromosome chromosome:GRCh37:17:1:81195210:1 REF
+AAGCTTCTCACCCTGTTCCTGCATAGATAATTGCATGACAATTGCCTTGTCCCTGCTGAA
+TGTGCTCTGGGGTCTCTGGGGTCTCACCCACGACCAACTCCCTGGGCCTGGCACCAGGGA
+```
+
+Gene annotation file 1:
+
+```terminal
+17  protein_coding  CDS     17991338        17991401    .    +       0       gene_id "ENSG00000108591"; transcript_id "ENST00000580929"; exon_number "1"; gene_name "DRG2"; gene_biotype "protein_coding"; transcript_name "DRG2-011"; protein_id "ENSP00000462060";
+```
+
+Fasta file 2:
+
+```terminal
+>scaffold_1
+CAGAACGGGAAACAGAAGAAAATCGTGTGAAGACGAAATAATATCGCTGGCCAGTACGGCCGCGGTACATTCAACATGTA
+AAACTTTCTCATGTCTGTCTATCCATCCATCCATCCATCCATCCATCCATCCATCCATCCATCCATCCATCCATCCATCC
+```
+
+Annotation file 2:
+
+```terminal
+scaffold_1		phytozome8_0	CDS	8410627	8410668	.	-	0	ID=PAC:23125614.CDS.1; Parent=PAC:23125614;pacid=23125614
+```
+
+**NOTE:** In principle, both files should correspond to the same released version of the genome project. In case that the user would like to compare different versions of these files, just be aware that some protein-coding gene coordinates could not be mapped correctly into the genome sequence if changes in the contigs, scaffolds or chromosomes occur along the versions.
+
+**2.** If the size of the genome sequence is bigger than 2.5 Gigabytes and the user is using a single standard laptop (2.6GHz, 8GB RAM), the user might consider to divide the genome sequence in smaller files. For example,the pinus genome ≈ 22.0 Gbs will need ~60 Gbs to read and process the sequence. Thus, the user is advised to divide the genome sequence by chromosomes or parts of similar size.
+
+**3.** Make sure that the names of the sequence and the annotation files have the following structure:
+
+```terminal
+species.database.status.otheruserinfo.fasta  and  species.database.status.otheruserinfo.gff
+
+<species>     Name of the species, e.g.: homo, homo_sapiens, hsa
+<database>    Name of the database where the annotation file was downloaded, e.g.: ensembl, phytozome, jgi, vectorbase, denovo, etc.
+              The program makes a particular distinction between the “ensemble” database and the rest. Make sure that you provide the correct database name.
+
+<status>      One of the only two status recognized for a genome project:
+              genome   = if complete until chromosome assignments
+              assembly = if assembled at the conting and/or scaffold level
+              The program requires any of these two options to be correctly provided for the single mode.
+              The option should also match the corresponding information provided in the name of the annotation file.
+<fasta>       Extension of the fasta file, e.g.: .fasta, .faa, .fas, .fna
+<annotation>  Extension of the fasta file, e.g.: .gff, .gtf
+```
+
+Example for an assembled genome:
+
+```bash
+volvox_carteri.phytozome.assembly.gff  and  volvox_carteri.phytozome.assembly.fasta
+```
+
+Example for a complete genome in a single file or several files:
+
+```bash
+homo_sapiens.ensembl.genome.gff  and  homo_sapiens.ensembl.genome.fasta         or
+                                      homo_sapiens.ensembl.chromosome.1.fasta
+                                      homo_sapiens.ensembl.chromosome.2.fasta
+									  ...
+                                      homo.sapiens.ensembl.chromosome.22.fasta
+                                      homo.sapiens.ensembl.chromosome.X.fasta
+                                      homo.sapiens.ensembl.chromosome.Y.fasta
+```
+
+**NOTE:** `GenomeContent` requires that all names of the files keep the above structure, regardless the mode you choose to run the pipeline, this is for a single or several genome projects. The structure of the name is particularly important when `GenomeContent` performs over several genome projects in one call.
+
 
 
 ---
