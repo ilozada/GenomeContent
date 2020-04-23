@@ -3,9 +3,16 @@
 
 A program that estimates global statistics and sequence-based estimators of genome features: exons, introns and intergenic regions
 
+A brief introduction to the program
+-----------------
+
+`GenomeContent` was written in Perl to calculate global statistics and sequence-based estimators of genome features in six major steps, as shown in Figure 1. First, the processing of gene annotations focuses on identifying coordinates from protein-coding gene (CDS), while the filtering process focuses on checking the quality of intron annotations. As described in next sections, the coordinates derived from both proceses are taken as the “reference gene sets” for introns, exons and intergenic regions to directly estimate several statistic descriptors, such as size, density and number. Then, the “reference gene sets” are projected onto the genome sequence in both strands, so that the nucleotide contents of each genome-feature are calculated according to the definitions described in a section below. Finally, all statistic descriptors obtained with the program are provided as text files, fasta formats and exploratory figures (as shown in Figure 1). `GenomeContent` runs on an entire genome in few minutes or hours, depending on genome size and the number of annotated genes. `GenomeContent` is available upon request during peer-review, and will be openly available upon request during peer-review, and will be openly available after publication.
+
+---
+
 ### Irma Lozada-Chávez
 
-*Please send your questions, comments and bug reports to: ilozada@bioinf.uni-leipzig.de*
+*Please send your questions, comments and bug reports to: : irma.lozada.chavez@gmail.com*
 
 If you use `GenomeContent` for your research, please cite the following paper:
 
@@ -13,16 +20,16 @@ If you use `GenomeContent` for your research, please cite the following paper:
 
 ___
 
-
 Table of Contents
 -----------------
 
 1. [Installation](#installation)
 2. [Quick start](#quick-start)
-3. [Description](#description)
-4. [Program options](#program-options)
-5. [Results: short overview](#results-short-overview)
-6. [Manual](#Manual)
+3. [Program options](#program-options)
+4. [Results: short overview](#results-short-overview)
+5. [Manual](#Manual)
+6. [Trouble shooting](#trouble-shooting)
+6. [Description](#description)
 
 
 ## Installation
@@ -126,15 +133,6 @@ In the specified folder, `-o`, several output-files are generated. A description
 - *total.outfile.[exons|introns|intergenics].table.txt*
 - *total.outfile.[exons|introns|intergenics].strands.table.txt*
 - *total.outfile.[exons|introns|intergenics].chromosomes.table.txt*
-
-
-## Description
-
-__A brief introduction to the program__
-
-`GenomeContent` was written in Perl to calculate global statistics and sequence-based estimators of genome features in six major steps, as shown in Figure 1. First, the processing of gene annotations focuses on identifying coordinates from protein-coding gene (CDS), while the filtering process focuses on checking the quality of intron annotations. As described in next sections, the coordinates derived from both proceses are taken as the “reference gene sets” for introns, exons and intergenic regions to directly estimate several statistic descriptors, such as size, density and number. Then, the “reference gene sets” are projected onto the genome sequence in both strands, so that the nucleotide contents of each genome-feature are calculated according to the definitions described in a section below. Finally, all statistic descriptors obtained with the program are provided as text files, fasta formats and exploratory figures (as shown in Figure 1). `GenomeContent` runs on an entire genome in few minutes or hours, depending on genome size and the number of annotated genes. `GenomeContent` is available upon request during peer-review, and will be openly available after publication.
-
-
 
 
 ## Program options
@@ -626,12 +624,37 @@ SIZE_NTS_RANGE 	      NUMBER	FREQ_GC%	 FREQ_AT%	FREQ_N%
 - **total.outfile.[exons|introns|intergenics].chromosomes.table.txt** \
 These files report several statistic estimators from the whole population for every genome feature (CDS, exons, introns and intergenic regions) at different levels: the whole genome, by strands and by chromosomes (when available). Meaning of the headers is described in the table of the following section.
 
-## Table for the description of the headers in the output files
-
-
+__Table for the description of the headers in the output files__
 
 
 ## Manual
+
+## Trouble shooting
+
+The user migth get some of the following ERROR messages while running the `GenomeContent` pipeline:
+
+- **The option -single \<yes | no\> and its accompanying parameters are MANDATORY. Please specify the necessary parameters and try again!**
+
+The user has forgotten to provide the mode to run the program, on a single genome (-single yes) or on several genomes (-single no).
+
+- **The following: -a \<annotations\> -g \<genomes\> -o \<outfiles\> -d \<database\> -t \<status\> are MANDATORY arguments to run GenomeContent.pl on a single genome. Please specify the necessary parameters and try again!**
+
+The user has failed to provided one or all parameters necessary to run the program in a single mode. A similar ERROR message will occur for the non-single mode.
+
+- **ERROR: The genome sequences are not located in '/directory/genomes'! Please correct that and try again.**
+
+The genome sequence is not located in the name and/or the directory provided for the user. Otherwise, the name of the genome sequence **does not match** with any of the following two options: to the name provided by the user for the **single mode** or to the name of the annotation file in the **non-single mode**.
+
+- **ERROR: File 'example.input.file.genome.fasta' doesn't look like a FASTA format and/or a DNA sequence! Please correct that and try again.**
+
+Is the genome sequence in nucleotides and in FASTA format?  The program stops if the fasta format (>) is missing at the beginning of every sequence and/or when the sequence is not given in nucleotides.
+
+- **ERROR: The name of the sequences in the fasta file DO NOT MATCH to the names of the sequences in the gene annotation file '/directory/annotations'! Please correct that and try again.**
+
+This is an important error. The program relies on matching the sequence names of the genome sequence with the sequence names in the gene annotation file. Usually, the format of both files are congruent from the same database and version of the genome project. Please, take into account that files from different databases (e.g., a gene annotation file from ensembl and a genome sequence from phytozome) or even from different versions of  the same genome projects (e.g., human genome GRCh35 versus GRCh38 in ensembl) migth have either incongruencies in the format or in the mapping of the coordinates into the genome sequence when changes in the contigs, scaffolds or chromosomes have occured along the versions.
+
+
+## Description
 
 
 
