@@ -3,10 +3,11 @@
 
 A program that estimates global statistics and sequence-based estimators of genome features: exons, introns and intergenic regions
 
+
 A brief introduction to the program
 -----------------
 
-`GenomeContent` was written in Perl to calculate global statistics and sequence-based estimators of genome features in six major steps, as shown in Figure 1. First, the processing of gene annotations focuses on identifying coordinates from protein-coding gene (CDS), while the filtering process focuses on checking the quality of intron annotations. As described in next sections, the coordinates derived from both proceses are taken as the “reference gene sets” for introns, exons and intergenic regions to directly estimate several statistic descriptors, such as size, density and number. Then, the “reference gene sets” are projected onto the genome sequence in both strands, so that the nucleotide contents of each genome-feature are calculated according to the definitions described in a section below. Finally, all statistic descriptors obtained with the program are provided as text files, fasta formats and exploratory figures (as shown in Figure 1). `GenomeContent` runs on an entire genome in few minutes or hours, depending on genome size and the number of annotated genes.
+`GenomeContent` was written with the programming language Perl to calculate genome-wide statistics and sequence-based estimators of genome features in four major steps. In the first step, the location and formats of the input and output files are checked; for instance, genome sequences are expected in fasta format, whereas annotation files are expected in GTF* or GFF* formats. Then, the processing of gene annotations focuses on identifying the parent/child relationships of all or selected sequence features, such as protein-coding genes, through a interoperable mapping structure. This process obtains the corresponding genomic coordinates of all “parent” and “child” features for each protein-coding gene, which are taken as the “reference gene coordinates” and are then storage in a nested hash structure. Then, a filtering process checks for the quality of gene models based on intron sizes (as described later on). In a second step, a series of optional tasks are performed according to the user needs, for instance, extracting the coordinates or sequences of features, extracting the SO terms identified for sequence features and sequence attributes, or getting the genomic coordinates in another format (plain column text or BED). In a third step, the collection of genomic coordinates for each feature within the “reference gene coordinates” (e.g., introns and exons) are taken directly to estimate other sequence features that are not explicitly annotated (such as intergenic regions), and then several statistic descriptors are calculated, such as size, density and number. On the last step, the collection of genomic coordinates for each feature within the “reference gene coordinates”, and of other features calculated in the previous step, are projected onto the genome sequence in both strands, so that the nucleotide contents of each genome-feature and other statistical descriptors can be calculated, according to the definitions described in the following sections.
 
 ---
 
@@ -14,9 +15,9 @@ A brief introduction to the program
 
 *Please send your questions, comments and bug reports to: : irma.lozada.chavez@gmail.com*
 
-If you use `GenomeContent` for your research, please cite the following paper:
+This version of the program is still a draft and being subject to tests. But if you use `GenomeContent` for your research, please cite the following paper:
 
-- Lozada-Chávez I, Stadler,P.F., and Prohaska, S.J. (2018) [__Genome-wide features of introns are evolutionary decoupled among themselves and from genome size throughout Eukarya__](https://www.biorxiv.org/content/early/2018/03/18/283549). __under peer-review__. doi: https://doi.org/10.1101/283549
+- Lozada-Chávez I, Stadler,P.F., and Prohaska, S.J. (2018) [__Genome-wide features of introns are evolutionary decoupled among themselves and from genome size throughout Eukarya__](https://www.biorxiv.org/content/early/2018/03/18/283549). __re-submitted__. doi: https://doi.org/10.1101/283549
 
 ___
 
@@ -34,7 +35,9 @@ Table of Contents
 
 ## Installation
 
-`GenomeContent` v1.0 is written in Perl language. So, it can be easily modified by the user. Additional documentation along the code is provided to facilitate these modifications. The program is released as a compressed archive file (`GenomeContent.tar.gz`) for download. Extracting the files to your current directory will create the directory `GenomeContent`, containing the required files.
+`GenomeContent` v0.80 is written in Perl language. This version of the program is still a draft and is being subject to tests. But, it can be easily modified by the user. Additional documentation along the code is provided to facilitate these modifications. The code of the program can be downloaded directly from here: [GenomeContent.tar.gz](https://github.com/ilozada/GenomeContent/files/9128730/GenomeContent.tar.gz)
+
+And two sets of genome files as examples to run the program are provided in a compressed archive file (`GenomeContent.tar.gz`) in the folder above. Extracting the files to your current directory will create the directory `GenomeContent`, containing the required files to run tests.
 
 `Unzip`:
 ```bash
