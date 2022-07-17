@@ -112,11 +112,7 @@ Two files are required by `GenomeContent`, the **genome sequence in fasta** form
 **GFF2** represents one nesting level of features and only two-level feature hierarchies, such as: transcipt → exon, so that `GenomeContent` identifies in the “group field of hierarchies” the name and ID numbers of the “CDS” feature coordinates that come from the same gene. The GTF format is a refinement of GFF2 and is sometimes referred to as GFF2.5. PROBLEM IN ALTERNATIVE TRANSCRIPTS.
 
 **GFF3** supports arbitrarily many hierarchical levels and  three-level feature hierarchies, such as: gene → transcript → exon. The top level is a feature of type "gene" which bundles up the gene's transcripts and regulatory elements. Beneath this level are one or more transcripts of type "mRNA". This level can also accommodate promoters and other cis-regulatory elements. At the third level are the components of the mRNA transcripts, most commonly CDS coding segments and UTRs.
-This example shows how to represent a gene named "EDEN" which has three alternatively-spliced mRNA transcripts:
 
-For example, it  and gives specific meanings to certain tags in the attributes field.
-
-**NOTE:** In principle,
 
 Once the user has both files, it is important to make sure that these files fulfill three requirements:
 
