@@ -33,8 +33,7 @@ Table of Contents
 2. [Quick start](#quick-start)
 3. [Program options](#program-options)
 4. [Results: short overview](#results-short-overview)
-5. [Manual](#Manual)
-6. [Trouble shooting](#trouble-shooting)
+5. [Trouble shooting](#trouble-shooting)
 6. [Description](#description)
 
 
@@ -803,7 +802,6 @@ __Table for the description of the headers in the output files__
 | **FREQ_Zs_%**                     |	Frequency of undetermined nucleotides in the sequence labeled as any other way rather than N and X |
 
 
-## Manual
 
 ## Trouble shooting
 
