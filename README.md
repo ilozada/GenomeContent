@@ -4,7 +4,7 @@
 A program that estimates global statistics and sequence-based estimators of genome features: exons, introns and intergenic regions
 
 
-A brief introduction to the program
+Main goals of the program
 -----------------
 
 **`GenomeContent` program is written in Perl language to achieve three main goals: \
@@ -24,7 +24,7 @@ This version of the program is still a draft and being subject to tests. But if 
 
 ___
 
-Table of Contents
+Table of Contents (*updating files and information*)
 -----------------
 
 1. [Installation](#installation)
