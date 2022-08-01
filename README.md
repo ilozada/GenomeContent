@@ -37,7 +37,8 @@ Table of Contents (*updating files and information*)
 
 ## Installation
 
-`GenomeContent` v0.80 is written in Perl language. This version of the program is still a draft and is being subject to tests. But, it can be easily modified by the user. Additional documentation along the code is provided to facilitate these modifications. The code of the program can be downloaded directly from here: [GenomeContent.tar.gz](https://github.com/ilozada/GenomeContent/files/9128730/GenomeContent.tar.gz)
+`GenomeContent` v0.80 is written in Perl language. This version of the program is still a draft and is being subject to tests. But, it can be easily modified by the user. Additional documentation along the code is provided to facilitate these modifications. The code of the program can be downloaded directly from here: [GenomeContent_v0.8.zip](https://github.com/ilozada/GenomeContent/files/9231489/GenomeContent_v0.8.zip)
+
 
 And two sets of genome files as examples to run the program are provided in a compressed archive file (`GenomeContent.tar.gz`) in the folder above. Extracting the files to your current directory will create the directory `GenomeContent`, containing the required files to run tests.
 
