@@ -47,9 +47,10 @@ And the annotation format (GFF3) and genome fasta file of the malarial parasite 
 
 Extracting the files to your current directory will create the directory `GenomeContent`, containing the required files to run tests.
 
-`Unzip`:
+To run "quickly" the provided example, `unzip` the compressed file in your home directory as:
+
 ```bash
-tar -zxvf GenomeContent.tar.gz
+[ilozada@home ~]$ tar -zxvf GenomeContent.tar.gz
 ```
 
 Perl version 5.22.0 (and above, see [Perl history](https://en.wikipedia.org/wiki/Perl_5_version_history)) and the following libraries are required to run the program (linux only): \
