@@ -45,7 +45,7 @@ And the annotation format (GFF3) and genome fasta file of the malarial parasite 
 -- Download source: https://protists.ensembl.org/Plasmodium_falciparum/Info/Annotation/#assembly
 
 
-(1) To run "quickly" the provided example, `unzip` the compressed file in your home directory as. Extracting the files to your current directory will create the directory `GenomeContent`, containing the required files to run tests.
+(1) To run "quickly" the provided example, `unzip` the compressed file in your home directory as described below. Extracting the files to your current directory will create the directory `GenomeContent`, containing the required files to run tests.
 
 ```bash
 
