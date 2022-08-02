@@ -63,7 +63,7 @@ Perl version 5.22.0 (and above, see [Perl history](https://en.wikipedia.org/wiki
 
 ## Quick start
 
-Given that you already have extracted and installed the above files and libraries, respectively, let's run the program (**in single mode**) to test if everything is okay and have a fast look at the outfiles. You can then go into the below description to understand the structure of the program and the results, and how to apply it to other genomes of your interest. So, just type the following command line in the current working directory of :
+	Given that you already have extracted and installed the above files and libraries, respectively, let's run the program (**in single mode**) to test if everything is okay and have a preliminary look at the outfiles. Then, you can navigate through the below description to understand the structure of the program and the results, and how to apply it to other genomes of your interest. So, just type the following command line in the current working (uncompressed) directory of `GenomeContent`:
 
 ```terminal
 
@@ -71,7 +71,7 @@ perl GenomeContent_v0.8.pl -s yes -a ~/GenomeContent/plasmodium_falciparum.ensem
 
 ```
 
-And if everything was installed correctly, you should have several output files in the directory `plasmodium.falciparum`. If so, then you can check directly the description of the [Results: short overview](#results-short-overview) or start checking how actually the program works and how the input files should be prepared to run the program with the genome(s) of your interest.
+And if everything was installed correctly, you should see several output files in the directory `plasmodium.falciparum`. If so, then you can check directly the description of the [Results: short overview](#results-short-overview) or start checking how actually the program works and how the input files should be prepared to run the program with the genome(s) of your interest.
 
 
 **Input files** \
