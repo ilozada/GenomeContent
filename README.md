@@ -45,15 +45,21 @@ And the annotation format (GFF3) and genome fasta file of the malarial parasite 
 -- Download source: https://protists.ensembl.org/Plasmodium_falciparum/Info/Annotation/#assembly
 
 
-Extracting the files to your current directory will create the directory `GenomeContent`, containing the required files to run tests.
-
-To run "quickly" the provided example, `unzip` the compressed file in your home directory as:
+(1) To run "quickly" the provided example, `unzip` the compressed file in your home directory as. Extracting the files to your current directory will create the directory `GenomeContent`, containing the required files to run tests.
 
 ```bash
+
 [ilozada@home ~]$ tar -zxvf GenomeContent.tar.gz
+
+[ilozada@home ~]$ ls
+GenomeContent_v0.8.pl
+plasmodium.falciparum/
+plasmodium_falciparum.ensembl.genome.fasta
+plasmodium_falciparum.ensembl.genome.gff
+
 ```
 
-Perl version 5.22.0 (and above, see [Perl history](https://en.wikipedia.org/wiki/Perl_5_version_history)) and the following libraries are required to run the program (linux only): \
+(2) Perl version 5.22.0 (and above, see [Perl history](https://en.wikipedia.org/wiki/Perl_5_version_history)) and the following libraries are required to run the program (linux only): \
 -- [Perl](https://www.perl.org/get.html) \
 -- [Getopt::Long](http://search.cpan.org/~jv/Getopt-Long-2.49.1/lib/Getopt/Long.pm) \
 -- [POSIX](http://search.cpan.org/~bingos/perl/ext/POSIX/lib/POSIX.pod) \
