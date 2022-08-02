@@ -39,9 +39,9 @@ Table of Contents (*updating files and information*)
 
 `GenomeContent` v0.80 is written in Perl language. This version of the program is still a draft and is being subject to tests. But, it can be easily modified by the user. Additional documentation along the code is provided to facilitate these modifications. The code of the program can be downloaded directly from here: [GenomeContent_v0.8.zip](https://github.com/ilozada/GenomeContent/files/9231489/GenomeContent_v0.8.zip)
 
-And the annotation format (GFF3) and genome fasta file of the malarial parasite 'Plasmodium falciparum' clone 3D7 (v2.0) --as downloaded from the JGI MycoCosm database-- are provided as examples to run the program: \
+And the annotation format (GFF3) and genome fasta file of the malarial parasite *Plasmodium falciparum* clone 3D7 (v2.0) --as downloaded from the JGI MycoCosm database-- are provided as examples to run the program: \
 -- The compressed file `GenomeContent.tar.gz` can be downloaded here and in the folder above: [GenomeContent.tar.gz](https://github.com/ilozada/GenomeContent/files/9241960/GenomeContent.tar.gz) \
--- Gardner MJ, et al. (2002). Genome sequence of the human malaria parasite 'Plasmodium falciparum'. Nature. 419:498-511. \
+-- Gardner MJ, et al. (2002). Genome sequence of the human malaria parasite *Plasmodium falciparum*. Nature. 419:498-511. \
 -- Download source: https://protists.ensembl.org/Plasmodium_falciparum/Info/Annotation/#assembly
 
 
@@ -58,7 +58,7 @@ Perl version 5.22.0 (and above, see [Perl history](https://en.wikipedia.org/wiki
 -- [POSIX](http://search.cpan.org/~bingos/perl/ext/POSIX/lib/POSIX.pod) \
 -- [Math::Complex](http://search.cpan.org/~zefram/Math-Complex-1.59/lib/Math/Complex.pm) \
 -- [Chart::Gnuplot](http://search.cpan.org/dist/Chart-Gnuplot/lib/Chart/Gnuplot.pm) \
--- [GD::Graph](http://search.cpan.org/dist/GDGraph/Graph.pm).
+-- [GD::Graph](http://search.cpan.org/dist/GDGraph/Graph.pm)
 
 
 ## Quick start
@@ -66,8 +66,6 @@ Perl version 5.22.0 (and above, see [Perl history](https://en.wikipedia.org/wiki
 Given that you already have extracted and installed the above files and libraries, respectively, let's run the program (**in single mode**) to test if everything is okay and have a fast look at the outfiles. You can then go into the below description to understand the structure of the program and the results, and how to apply it to other genomes of your interest. So, just type the following command line in the current working directory of :
 
 ```terminal
-
-perl GenomeContent.pl -s yes 
 
 perl GenomeContent_v0.8.pl -s yes -a ~/GenomeContent/plasmodium_falciparum.ensembl.genome.gff -g ~/GenomeContent/plasmodium_falciparum.ensembl.genome.fasta -o ~/GenomeContent/plasmodium.falciparum/ -d ensembl -t genome -e plasmodium.falciparum
 
