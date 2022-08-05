@@ -20,7 +20,7 @@ Main goals of the program
 
 This version of the program is still a draft and being subject to tests. But if you use `GenomeContent` for your research, please cite the following paper:
 
-- Lozada-Chávez I, Stadler,P.F., and Prohaska, S.J. (2018) [__Genome-wide features of introns are evolutionary decoupled among themselves and from genome size throughout Eukarya__](https://www.biorxiv.org/content/early/2018/03/18/283549). __re-submitted__. doi: https://doi.org/10.1101/283549
+- Lozada-Chávez I, Stadler,P.F., and Prohaska, S.J. (2018) [__Genome-wide features of introns are evolutionary decoupled among themselves and from genome size throughout Eukarya__](https://www.biorxiv.org/content/early/2018/03/18/283549). __re-submitted__. [doi: https://doi.org/10.1101/283549](https://www.biorxiv.org/content/early/2018/03/18/283549)
 
 ___
 
