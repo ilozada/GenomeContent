@@ -18,7 +18,7 @@ Main goals of the program
 
 *Please send your questions, comments and bug reports to: : irma.lozada.chavez@gmail.com*
 
-This version of the program is still a draft and being subject to tests. But if you use `GenomeContent` for your research, please cite the following paper:
+This version of the program is still a draft and being subject to changes and tests. But if you use `GenomeContent` for your research, please cite the following paper:
 
 - Lozada-Chávez I, Stadler,P.F., and Prohaska, S.J. (2018) [__Genome-wide features of introns are evolutionary decoupled among themselves and from genome size throughout Eukarya__](https://www.biorxiv.org/content/early/2018/03/18/283549). __re-submitted__. [doi: https://doi.org/10.1101/283549](https://www.biorxiv.org/content/early/2018/03/18/283549)
 
@@ -37,7 +37,7 @@ Table of Contents (*updating files and information*)
 
 ## Installation
 
-`GenomeContent` v0.80 is written in Perl language. This version of the program is still a draft and is being subject to tests. But, it can be easily modified by the user. Additional documentation along the code is provided to facilitate these modifications. The code of the program can be downloaded directly from here: [GenomeContent_v0.8.zip](https://github.com/ilozada/GenomeContent/files/9231489/GenomeContent_v0.8.zip)
+`GenomeContent` v0.80 is written in Perl language. This version of the program is still a draft and is being subject to changes and tests. But, it can be easily modified by the user. Additional documentation along the code is provided to facilitate these modifications. The code of the program can be downloaded directly from here: [GenomeContent_v0.8.zip](https://github.com/ilozada/GenomeContent/files/9231489/GenomeContent_v0.8.zip)
 
 And the annotation format (GFF3) and genome fasta file of the malarial parasite *Plasmodium falciparum* clone 3D7 (v2.0) --as downloaded from the ENSEMBL database-- are provided as examples to run the program: \
 -- The compressed file `GenomeContent.tar.gz` can be downloaded here and in the folder above: [GenomeContent.tar.gz](https://github.com/ilozada/GenomeContent/files/9241960/GenomeContent.tar.gz) \
@@ -76,7 +76,7 @@ Given that you already have extracted and installed the above files and librarie
 perl GenomeContent_v0.8.pl -s yes -a ~/GenomeContent/plasmodium_falciparum.ensembl.genome.gff -g ~/GenomeContent/plasmodium_falciparum.ensembl.genome.fasta -o ~/GenomeContent/plasmodium.falciparum/ -d ensembl -t genome -e plasmodium.falciparum
 ```
 
-And if everything was installed correctly, you should see several output files in the directory `plasmodium.falciparum`. If so, then you can check directly the description of the [Results: short overview](#results-short-overview) or start checking how actually the program works and how the input files should be prepared to run the program with the genome(s) of your interest.
+And if everything was installed correctly, you should see several output files in the directory `plasmodium.falciparum`. If so, then you can check directly the description of the [Results: short overview](#results-short-overview) or start checking how the program works and how the input files should be prepared to run the program with the genome(s) of your interest.
 
 
 **Input files** \
